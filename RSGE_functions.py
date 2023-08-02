@@ -10,37 +10,25 @@ from datetime import datetime
 from datetime import timedelta
 
 
-# Poll th RS GE API for the last updated date
+# Poll the RS GE API for the last updated date
 def lastUpdate():
 	url = 'https://secure.runescape.com/m=itemdb_rs/api/info.json'
 	response = urllib.request.urlopen(url)
 	data = json.loads(response.read())
 	date = datetime.fromisoformat('2002-02-27') + timedelta(days=data['lastConfigUpdateRuneday'])
 	sinceUpdate = datetime.now() - date
-	return '{} ({} ago)'.format(date, sinceUpdate)
+	return 'Last Updated {} ({} ago)'.format(date, sinceUpdate)
 
-# Query RS GE API for item price
-def priceCheck(itemName):
-	itemID = findItemID(itemName)
-	if itemID is None:
-		return 'N/A'
-	url = 'https://secure.runescape.com/m=itemdb_rs/api/catalogue/detail.json?item={}'.format(itemID)
-	response = urllib.request.urlopen(url)
-	data = json.loads(response.read())
-	return data['item']['current']['price']
+def imageUrl(url):
+	request = urllib.request.Request(url, headers = {"User-Agent" : "Magic Browser"})
+	content = urllib.request.urlopen(request)
+	return content.read()
 
-# Locate item by name from item_dict and return id
-def findItemID(itemName):
-	for item in item_dict:
-		if 'name' in item:
-			if item['name'] == itemName:
-				return item['id']
-	return
+def jsonDict(source, isUrl):
+	if(isUrl):
+		request = urllib.request.Request(source, headers={"User-Agent" : "Magic Browser"})
+		content = urllib.request.urlopen(request)
+		return json.loads(content.read())
+	return json.loads(open(source, 'rt').read())
 
-def loadImage(url, size):
-	return
-
-# Dictionary for JSON from https://chisel.weirdgloop.org/gazproj/cache
-json_file = open("data/items.json", "rt")
-json_text = json_file.read()
-item_dict = json.loads(json_text)
+gazbot_dict = jsonDict("https://chisel.weirdgloop.org/gazproj/gazbot/rs_dump.json", True)
