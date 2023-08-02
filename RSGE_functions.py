@@ -9,6 +9,7 @@ import urllib.request
 from datetime import datetime
 from datetime import timedelta
 
+
 # Poll th RS GE API for the last updated date
 def lastUpdate():
 	url = 'https://secure.runescape.com/m=itemdb_rs/api/info.json'
@@ -18,6 +19,7 @@ def lastUpdate():
 	sinceUpdate = datetime.now() - date
 	return '{} ({} ago)'.format(date, sinceUpdate)
 
+# Query RS GE API for item price
 def priceCheck(itemName):
 	itemID = findItemID(itemName)
 	if itemID is None:
@@ -27,11 +29,15 @@ def priceCheck(itemName):
 	data = json.loads(response.read())
 	return data['item']['current']['price']
 
+# Locate item by name from item_dict and return id
 def findItemID(itemName):
 	for item in item_dict:
 		if 'name' in item:
 			if item['name'] == itemName:
 				return item['id']
+	return
+
+def loadImage(url, size):
 	return
 
 # Dictionary for JSON from https://chisel.weirdgloop.org/gazproj/cache

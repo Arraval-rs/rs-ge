@@ -3,13 +3,30 @@
 # Event loop of the application                     #
 #####################################################
 
+import PySimpleGUI as sg
+
 #RSGE files
 import RSGE_functions as RSGE_f
+import RSGE_lookup as RSGE_look
+import RSGE_geSummary as RSGE_sum
 
-print('Last Updated: {}'.format(RSGE_f.lastUpdate()))
+lookupWindow = RSGE_look.LookupWindow()
+summaryWindow = RSGE_sum.GeWindow()
+
+root_window = [[lookupWindow.lookup_frame, summaryWindow.summary_frame]]
+
+window = sg.Window("RuneScape Grand Exchange Checker", root_window)
+window.Finalize()
+
+# Event loop
 while(1):
-	print('\nEnter an item:')
-	item = input()
-	if item == 'exit':
-		break
-	print('{} price is {} gp'.format(item, RSGE_f.priceCheck(item)))
+    event, values = window.read(timeout = 120)
+    if event == sg.WIN_CLOSED:
+    	break
+    lookupWindow.update_widgets(window, event, values)
+    summaryWindow.update_widgets(window, event, values)
+
+    if event != '__TIMEOUT__':
+        print(event)
+
+window.close()   
