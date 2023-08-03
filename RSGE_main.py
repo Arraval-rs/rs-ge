@@ -9,11 +9,12 @@ import PySimpleGUI as sg
 import RSGE_functions as RSGE_f
 import RSGE_lookup as RSGE_look
 import RSGE_geSummary as RSGE_sum
+import RSGE_item
 
 lookupWindow = RSGE_look.LookupWindow()
 summaryWindow = RSGE_sum.GeWindow()
 
-root_window = [[lookupWindow.lookup_frame, summaryWindow.summary_frame]]
+root_window = [[sg.Text(text = RSGE_f.lastUpdate())], [lookupWindow.lookup_frame, summaryWindow.summary_frame]]
 
 window = sg.Window("RuneScape Grand Exchange Checker", root_window)
 window.Finalize()
@@ -28,5 +29,6 @@ while(1):
 
     if event != '__TIMEOUT__':
         print(event)
+        print(values)
 
 window.close()   
