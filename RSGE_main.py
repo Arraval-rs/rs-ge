@@ -27,8 +27,8 @@ while(1):
     lookupWindow.update_widgets(window, event, values)
     summaryWindow.update_widgets(window, event, values)
 
-    if event != '__TIMEOUT__':
-        print(event)
-        print(values)
+    # if event != '__TIMEOUT__':
+    #     print(event)
+    #     print(values)
 
 window.close()   

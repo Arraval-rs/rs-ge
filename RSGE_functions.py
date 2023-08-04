@@ -37,7 +37,12 @@ def jsonDict(source, isUrl):
 
 # Generates an abbreviated price for input price and quantity i.e. 10k for 10000
 def generate_price(price, quantity):
-	return price*quantity
+	try:
+		if not quantity.isnumeric():
+			quantity = 0
+	except AttributeError:
+		return price*quantity
+	return price*int(quantity)
 
 # Dictionary of all items and price info updated daily
 gazbot_dict = jsonDict("https://chisel.weirdgloop.org/gazproj/gazbot/rs_dump.json", True)

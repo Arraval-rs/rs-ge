@@ -16,6 +16,7 @@ class LookupWindow:
 
 	# Updates all lookup elements when a related event occurs
 	def update_widgets(self, window, event, values):
+
 		# Search Button Event
 		if event == "Search":
 			if len(window["lookup_input"].get()) < 3:
@@ -37,15 +38,15 @@ class LookupWindow:
 
 		# Lookup List Event
 		elif event == "lookup_list" and values["lookup_list"][0] not in ["Search key too short", "No items found", "Enter a search key above"]:
-			index = self.lookup_items.index(values["lookup_list"][0])
+			index = window.Element('lookup_list').Widget.curselection()[0]
 			RSGE_f.selected_item = RSGE_item.RSGE_item(self.lookup_ids[index])
 			window["lookup_stats"].update(RSGE_f.selected_item)
-			window["lookup_total"].update(f"{RSGE_f.generate_price(int(RSGE_f.selected_item.price), int(window['lookup_quantity'].get()))} gp")
+			window["lookup_total"].update(f"{RSGE_f.generate_price(RSGE_f.selected_item.price, window['lookup_quantity'].get())} gp")
 			window["lookup_image"].update(RSGE_f.selected_item.image)
 
 		# Lookup Quantity Event
 		elif event == "lookup_quantity" and RSGE_f.selected_item is not None:
-			window["lookup_total"].update(f"{RSGE_f.generate_price(int(RSGE_f.selected_item.price), int(window['lookup_quantity'].get()))} gp")
+			window["lookup_total"].update(f"{RSGE_f.generate_price(RSGE_f.selected_item.price, window['lookup_quantity'].get())} gp")
 
 	# Creates lookup frame containing input box, search button, and results listbox elements
 	def create_lookup_frame(self, lookup_item_frame):
